@@ -19,7 +19,7 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
         className="absolute inset-0 z-0"
       >
         <img 
-          src="/images/hero_mango.png" 
+          src="/assets/images/hero_mango.png" 
           className="w-full h-full object-cover"
           alt="Malda Mango Orchard"
           referrerPolicy="no-referrer"

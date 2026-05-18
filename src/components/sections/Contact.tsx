@@ -1,4 +1,5 @@
 import { MessageCircle, MapPin, Mail } from "lucide-react";
+import { CONTACT_INFO } from "../../constants";
 
 interface ContactProps {
   openWhatsApp: () => void;
@@ -35,7 +36,7 @@ export const Contact = ({ openWhatsApp }: ContactProps) => {
                 </div>
                 <div>
                   <h4 className="text-xl font-bold mb-2">Partnership Queries</h4>
-                  <p className="text-gray-500 leading-relaxed font-medium">sales@maldadirectmangoes.com</p>
+                  <p className="text-gray-500 leading-relaxed font-medium">{CONTACT_INFO.email}</p>
                 </div>
               </div>
             </div>

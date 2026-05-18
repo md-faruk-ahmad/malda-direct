@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { MessageCircle, ChevronRight, ShieldCheck } from "lucide-react";
-import { MANGO_VARIETIES } from "../constants";
+import { MANGO_VARIETIES } from "../../constants";
 
 interface VarietiesProps {
   orderVariety: (variety: string) => void;

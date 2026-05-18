@@ -8,11 +8,11 @@ import { useNavigation } from "./hooks/useNavigation";
 import { Navbar } from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
 import { WhatsAppButton } from "./components/ui/WhatsAppButton";
-import { Hero } from "./sections/Hero";
-import { Varieties } from "./sections/Varieties";
-import { Logistics } from "./sections/Logistics";
-import { BulkOrderCTA } from "./sections/BulkOrderCTA";
-import { Contact } from "./sections/Contact";
+import { Hero } from "./components/sections/Hero";
+import { Varieties } from "./components/sections/Varieties";
+import { Logistics } from "./components/sections/Logistics";
+import { BulkOrderCTA } from "./components/sections/BulkOrderCTA";
+import { Contact } from "./components/sections/Contact";
 
 export default function App() {
   const {
