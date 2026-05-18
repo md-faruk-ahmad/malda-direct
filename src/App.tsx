@@ -3,13 +3,28 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { motion } from "motion/react";
+import { motion, useScroll, useTransform, useMotionValueEvent, AnimatePresence } from "motion/react";
 import { MessageCircle, MapPin, Mail, ChevronRight, Menu, X, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { MANGO_VARIETIES, CONTACT_INFO } from "./constants";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showFAB, setShowFAB] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Hero Parallax Effects
+  const imageScale = useTransform(scrollY, [0, 1000], [1, 1.15]);
+  const textY = useTransform(scrollY, [0, 1000], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 400) {
+      setShowFAB(true);
+    } else {
+      setShowFAB(false);
+    }
+  });
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -69,106 +84,102 @@ export default function App() {
         {/* Mobile Nav */}
         <motion.div
            initial={false}
-           animate={isMenuOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-           className="md:hidden overflow-hidden bg-white border-b border-[#e5e1d8]"
+           animate={isMenuOpen ? { height: "auto", opacity: 1, visibility: "visible" } : { height: 0, opacity: 0, transitionEnd: { visibility: "hidden" } }}
+           transition={{ duration: 0.3, ease: "circOut" }}
+           className="md:hidden overflow-hidden bg-white border-b border-[#e5e1d8] shadow-2xl relative z-[60]"
         >
-          <div className="flex flex-col p-6 gap-6">
+          <div className="flex flex-col p-8 gap-8">
             {['Varieties', 'Bulk Orders', 'Contact'].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item.toLowerCase().replace(' ', '-'))}
-                className="text-left text-lg font-medium"
-                id={`mobile-nav-${item.toLowerCase()}`}
+                className="text-left text-xl font-bold text-[#2c241c] hover:text-[#1a5d1a] transition-colors border-b border-[#f5f2ed] pb-4"
+                id={`mobile-nav-${item.toLowerCase().replace(' ', '-')}`}
               >
                 {item}
               </button>
             ))}
             <button
               onClick={openWhatsApp}
-              className="bg-[#1a5d1a] text-white p-4 rounded-xl text-center font-bold flex items-center justify-center gap-2"
+              className="bg-[#1a5d1a] text-white p-5 rounded-2xl text-center font-bold flex items-center justify-center gap-3 shadow-xl active:scale-95 transition-transform"
               id="mobile-cta-whatsapp"
             >
-              <MessageCircle /> WhatsApp Now
+              <MessageCircle className="w-6 h-6 text-[#25D366]" />
+              Message on WhatsApp
             </button>
           </div>
         </motion.div>
       </nav>
 
+      {/* Backdrop for Mobile Menu */}
+      {isMenuOpen && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={() => setIsMenuOpen(false)}
+          className="fixed inset-0 bg-[#2c241c]/40 backdrop-blur-sm z-40 md:hidden"
+        />
+      )}
+
       <main>
         {/* Hero Section */}
-        <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
+        <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden bg-[#2c241c]">
+          <motion.div 
+            style={{ scale: imageScale }}
+            className="absolute inset-0 z-0"
+          >
             <img 
               src="/src/assets/images/hero_mango_orchard_1779088608533.png" 
               className="w-full h-full object-cover"
               alt="Malda Mango Orchard"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#2c241c]/90 via-[#2c241c]/50 to-transparent" />
-          </div>
+            <div className="absolute inset-0 bg-[#2c241c]/40 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-transparent md:hidden" />
+          </motion.div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-20">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+              style={{ y: textY, opacity }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="max-w-3xl"
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-3xl text-left mx-0"
             >
-              <span className="inline-block px-4 py-1.5 bg-[#e6b34b] text-white text-xs font-bold tracking-widest uppercase mb-6 rounded-sm shadow-sm">
-                Established Growers in Malda
-              </span>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1] mb-8 tracking-tighter">
-                Freshly Sourced <br />
-                <span className="text-[#e6b34b] font-display italic">Malda Mangoes</span>
+              <div className="flex items-center justify-start gap-3 mb-6 lg:mt-12">
+                <div className="h-px w-8 bg-[#e6b34b]" />
+                <span className="text-[#e6b34b] text-[10px] sm:text-xs font-bold tracking-[0.4em] uppercase" id="hero-tag">
+                  ESTABLISHED GROWERS
+                </span>
+              </div>
+              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1] mb-8 tracking-tighter" id="hero-title">
+                Freshly <br className="hidden sm:block" />
+                <span className="text-[#e6b34b] font-display italic font-light">Heritage</span>
+                <br /> Mangoes
               </h1>
-              <p className="text-xl text-gray-200 mb-10 leading-relaxed max-w-xl">
-                Directly from our family-managed orchards in Malda district. We specialize in bulk supplies of Himsagor, Langra, and premium Fazli varieties.
+              
+              <p className="text-base sm:text-lg lg:text-xl text-gray-200/80 mb-10 leading-relaxed max-w-xl mx-0 font-light tracking-wide" id="hero-desc">
+                Savor the authentic taste of Malda district. We provide premium wholesale supply of Himsagor and Langra varieties, harvested with generations of expertise.
               </p>
-              <div className="flex flex-col sm:flex-row gap-5 items-center sm:items-start">
+              <div className="flex flex-col sm:flex-row gap-6 items-start justify-start">
                 <button 
                   onClick={() => scrollToSection('varieties')}
-                  className="w-full sm:w-auto bg-white text-[#2c241c] px-10 py-5 rounded-full font-bold hover:bg-[#e6b34b] hover:text-white transition-all flex items-center justify-center gap-3 group shadow-2xl"
+                  className="w-full sm:w-auto bg-white text-[#2c241c] px-12 py-5 rounded-full font-bold hover:bg-[#e6b34b] hover:text-white transition-all flex items-center justify-center gap-3 group shadow-2xl hover:-translate-y-1 hover:shadow-[#e6b34b]/20"
                   id="hero-explore"
                 >
-                  Explore Varieties
+                  Explore Collection
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
                 <button 
                   onClick={openWhatsApp}
-                  className="w-full sm:w-auto border-2 border-white/40 backdrop-blur-sm text-white px-10 py-5 rounded-full font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+                  className="w-full sm:w-auto border-2 border-white/20 backdrop-blur-xl text-white px-12 py-5 rounded-full font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-3 active:scale-95"
                   id="hero-whatsapp"
                 >
                   <MessageCircle className="w-5 h-5 text-[#25D366]" />
-                  Bulk Order Enquiry
+                  Bulk Enquiry
                 </button>
               </div>
             </motion.div>
-          </div>
-
-          {/* Stats Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 hidden lg:block bg-black/20 backdrop-blur-sm border-t border-white/10">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="flex justify-between items-center py-10">
-                <div className="flex gap-20">
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-1">100%</div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">Natural Ripening</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-1">Direct</div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">Farm-to-Gate</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white mb-1">Premium</div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold">Export Quality</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4 text-white/60 text-sm">
-                  <MapPin className="scale-75" />
-                  <span>English Bazar, Malda, WB</span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -181,17 +192,17 @@ export default function App() {
                   <div className="h-px w-12 bg-[#e6b34b]"></div>
                   <span className="text-[#e6b34b] font-bold tracking-[0.3em] text-xs uppercase">The Collection</span>
                 </div>
-                <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-tight font-display">Our Signature <span className="text-[#1a5d1a]">Varieties</span></h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-8 tracking-tight font-display">Our Signature <span className="text-[#1a5d1a]">Varieties</span></h2>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   Carefully harvested from the fertile soil of Malda, these varieties represent the peak of mango cultivation in India. Each variety is picked at the perfect maturity stage.
                 </p>
               </div>
               <div className="hidden lg:block shrink-0">
-                <div className="text-[10rem] font-black text-[#f5f2ed] leading-none select-none">2024</div>
+                <div className="text-[10rem] font-black text-[#f5f2ed] leading-none select-none">2026</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
               {MANGO_VARIETIES.map((mango, i) => (
                 <motion.div
                   key={mango.id}
@@ -199,7 +210,7 @@ export default function App() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.5 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  className="group relative bg-[#fdfcf8] rounded-[2.5rem] border border-[#e5e1d8]/50 hover:border-[#e6b34b]/30 hover:shadow-[0_30px_60px_-15px_rgba(44,36,28,0.1)] transition-all duration-500 overflow-hidden flex flex-col h-full"
+                  className="group relative bg-[#fdfcf8] rounded-[1.5rem] border border-[#e5e1d8]/50 hover:border-[#e6b34b]/30 hover:shadow-[0_20px_40px_-10px_rgba(44,36,28,0.1)] transition-all duration-500 overflow-hidden flex flex-col h-full"
                   id={`mango-card-${mango.id}`}
                 >
                   <div className="aspect-[1/1] shrink-0 overflow-hidden bg-[#f5f2ed]">
@@ -211,35 +222,35 @@ export default function App() {
                     />
                   </div>
                   
-                  <div className="p-8 flex flex-col flex-1">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="px-3 py-1 bg-[#1a5d1a] text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">
+                  <div className="p-4 md:p-7 flex flex-col flex-1">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="px-2.5 py-0.5 bg-[#1a5d1a] text-white text-[9px] font-bold uppercase tracking-widest rounded-sm">
                         {mango.season}
                       </div>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Malda, West Bengal</span>
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">Malda, WB</span>
                     </div>
 
-                    <h3 className="text-3xl font-display font-bold mb-4 group-hover:text-[#1a5d1a] transition-colors">{mango.name}</h3>
-                    <p className="text-gray-600 text-sm mb-8 leading-relaxed flex-1">
+                    <h3 className="text-xl md:text-2xl font-display font-bold mb-2 group-hover:text-[#1a5d1a] transition-colors">{mango.name}</h3>
+                    <p className="text-gray-600 text-[13px] md:text-sm mb-4 leading-relaxed flex-1 line-clamp-3">
                       {mango.description}
                     </p>
                     
-                    <div className="space-y-4 mt-auto">
-                      <div className="flex flex-wrap gap-2">
+                    <div className="space-y-3 mt-auto">
+                      <div className="flex flex-wrap gap-1.5">
                         {mango.characteristics.map((char, idx) => (
-                          <span key={idx} className="text-[9px] font-bold uppercase tracking-widest text-[#1a5d1a]/70 bg-[#1a5d1a]/5 px-2.5 py-1 rounded-full">
+                          <span key={idx} className="text-[8px] font-bold uppercase tracking-widest text-[#1a5d1a]/70 bg-[#1a5d1a]/5 px-2 py-0.5 rounded-full">
                             {char}
                           </span>
                         ))}
                       </div>
                       <button 
                         onClick={() => orderVariety(mango.name)}
-                        className="w-full py-4.5 bg-[#2c241c] hover:bg-[#1a5d1a] text-white font-bold rounded-2xl transition-all flex items-center justify-center gap-3 shadow-xl group/btn"
+                        className="w-full py-3.5 bg-[#2c241c] hover:bg-[#1a5d1a] text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm group/btn active:scale-[98%]"
                         id={`order-btn-${mango.id}`}
                       >
-                        <MessageCircle className="w-5 h-5 text-[#25D366]" />
-                        Bulk Enquiry
-                        <ChevronRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all" />
+                        <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                        <span className="text-sm">Enquiry</span>
+                        <ChevronRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/btn:opacity-100 group-hover/btn:translate-x-0 transition-all" />
                       </button>
                     </div>
                   </div>
@@ -279,12 +290,12 @@ export default function App() {
         <section id="bulk-orders" className="py-20">
           <div className="max-w-7xl mx-auto px-6">
             <div className="bg-[#1a5d1a] rounded-[4rem] p-12 md:p-24 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-16">
-              <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#e6b34b] blur-[150px] opacity-10" />
-              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-white blur-[150px] opacity-10" />
+              <div className="absolute -top-24 -left-24 w-96 h-96 bg-[#e6b34b] blur-[150px] opacity-10 lg:hidden" />
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-white blur-[150px] opacity-10 lg:hidden" />
               
               <div className="relative z-10 max-w-xl text-center lg:text-left text-white">
                 <span className="text-[#e6b34b] font-bold tracking-[0.4em] text-[10px] uppercase block mb-6">Partnership</span>
-                <h2 className="text-4xl md:text-6xl font-bold mb-8 leading-[1.1] font-display italic">Wholesale Supply for the Global Market</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-8 leading-[1.1] font-display italic">Wholesale Supply for the Global Market</h2>
                 <p className="text-xl text-green-100/70 mb-12">
                   Partner with Malda's premium growers. We offer competitive pricing for metric-ton quantities and long-term supply contracts.
                 </p>
@@ -301,25 +312,25 @@ export default function App() {
               </div>
 
               <div className="relative z-10 w-full max-w-md">
-                <div className="bg-white/5 backdrop-blur-md rounded-[3rem] p-10 border border-white/10">
-                  <div className="flex items-center gap-6 mb-10">
-                    <div className="w-16 h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center">
-                      <MessageCircle className="w-8 h-8 text-[#25D366]" />
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] p-7 md:p-12 border border-white/10 shadow-2xl">
+                  <div className="flex items-center gap-4 md:gap-5 mb-8">
+                    <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#25D366]/20 flex items-center justify-center shrink-0 shadow-inner">
+                      <MessageCircle className="w-6 h-6 md:w-8 md:h-8 text-[#25D366]" />
                     </div>
                     <div>
-                      <div className="text-sm text-green-100/60 uppercase tracking-widest font-bold">Quick Link</div>
-                      <div className="text-xl font-bold text-white tracking-tight">Direct WhatsApp</div>
+                      <div className="text-[10px] md:text-xs text-green-100/60 uppercase tracking-[0.2em] font-bold mb-1">Quick Link</div>
+                      <div className="text-lg md:text-2xl font-bold text-white tracking-tight">Direct WhatsApp</div>
                     </div>
                   </div>
                   <button 
                     onClick={openWhatsApp}
-                    className="w-full bg-[#e6b34b] hover:bg-white text-[#2c241c] py-8 rounded-[2rem] text-2xl font-black transition-all flex items-center justify-center gap-4 group shadow-2xl active:scale-95"
+                    className="w-full bg-[#e6b34b] hover:bg-white text-[#2c241c] py-4 md:py-6 px-4 md:px-6 rounded-2xl md:rounded-[2rem] text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.2em] transition-all flex items-center justify-center gap-2 md:gap-3 group shadow-2xl active:scale-[98%] shadow-[#e6b34b]/20 whitespace-nowrap uppercase"
                     id="bulk-cta-whatsapp"
                   >
-                    CHAT WITH US
-                    <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                    BULK ORDER
+                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-2 transition-transform shrink-0" />
                   </button>
-                  <p className="text-center text-[10px] text-green-100/40 uppercase tracking-widest mt-6 font-bold">Inquiries handled by managing director</p>
+                  <p className="text-center text-[9px] md:text-[10px] text-green-100/40 uppercase tracking-[0.3em] mt-6 font-bold">Direct line to grower support</p>
                 </div>
               </div>
             </div>
@@ -334,7 +345,7 @@ export default function App() {
                 <div className="inline-block px-3 py-1 bg-[#e6b34b]/10 text-[#e6b34b] text-[10px] font-bold uppercase tracking-widest rounded-sm mb-6">
                   Contact
                 </div>
-                <h2 className="text-4xl md:text-6xl font-bold mb-10 tracking-tight font-display italic">Let's Discuss <br />Your Supply Needs</h2>
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-10 tracking-tight font-display italic">Let's Discuss <br />Your Supply Needs</h2>
                 <p className="text-lg text-gray-600 mb-16 leading-relaxed">
                   Our headquarters are located in the heart of Malda's mango district. Visit our collection centers or schedule a call to discuss logistics.
                 </p>
@@ -363,9 +374,9 @@ export default function App() {
               </div>
 
               <div className="relative">
-                <div className="absolute inset-0 bg-[#e6b34b] blur-[100px] opacity-10 pointer-events-none" />
-                <div className="relative bg-white p-12 lg:p-16 rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(44,36,28,0.1)] border border-[#e5e1d8]">
-                  <h3 className="text-3xl font-bold mb-10 font-display italic">Send Quick Message</h3>
+                <div className="absolute inset-0 bg-[#e6b34b] blur-[100px] opacity-10 pointer-events-none lg:hidden" />
+                <div className="relative bg-white p-8 sm:p-12 lg:p-16 rounded-[2.5rem] md:rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(44,36,28,0.1)] border border-[#e5e1d8]">
+                  <h3 className="text-2xl sm:text-3xl font-bold mb-8 md:mb-10 font-display italic">Send Quick Message</h3>
                   <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                       <div className="space-y-3">
@@ -390,11 +401,11 @@ export default function App() {
                     </div>
                     <button 
                       onClick={openWhatsApp}
-                      className="w-full bg-[#1a5d1a] text-white py-6 rounded-2xl font-bold text-lg flex items-center justify-center gap-4 hover:bg-[#e6b34b] transition-all shadow-2xl active:scale-[98%]"
+                      className="w-full bg-[#1a5d1a] text-white py-4 rounded-2xl font-bold text-xs tracking-[0.1em] uppercase flex items-center justify-center gap-2 hover:bg-[#e6b34b] transition-all shadow-2xl active:scale-[98%]"
                       id="submit-form-cta"
                     >
                       Connect on WhatsApp
-                      <MessageCircle className="w-6 h-6 text-[#25D366]" />
+                      <MessageCircle className="w-4 h-4 text-[#25D366]" />
                     </button>
                     <p className="text-center text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-6">
                       No automated spam. Direct human response.
@@ -408,8 +419,8 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#2c241c] text-white py-12 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:row items-center justify-between gap-8 text-center md:text-left">
+      <footer className="bg-[#2c241c] text-white py-16 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left">
           <div>
             <span className="text-2xl font-bold tracking-tighter text-white">MALDA<span className="text-[#e6b34b]">DIRECT</span></span>
             <p className="text-gray-500 text-sm mt-2 max-w-xs">Premium Mango Supplier from Malda district, West Bengal.</p>
@@ -427,13 +438,28 @@ export default function App() {
       </footer>
 
       {/* WhatsApp Fixed Button */}
-      <button 
-        onClick={openWhatsApp}
-        className="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform md:hidden"
-        id="floating-whatsapp"
-      >
-        <MessageCircle className="w-8 h-8" />
-      </button>
+      <AnimatePresence>
+        {showFAB && (
+          <motion.div
+            initial={{ scale: 0, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0, opacity: 0, y: 20 }}
+            className="fixed bottom-6 right-6 z-[100]"
+          >
+            <button 
+              onClick={openWhatsApp}
+              className="bg-[#25D366] text-white flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl hover:scale-105 active:scale-95 transition-all group"
+              id="floating-whatsapp"
+            >
+              <div className="relative">
+                <div className="absolute -inset-1 bg-white rounded-full animate-ping opacity-20" />
+                <MessageCircle className="w-6 h-6 relative z-10" />
+              </div>
+              <span className="font-bold text-sm hidden md:block">Bulk Enquiry</span>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

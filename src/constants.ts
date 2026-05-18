@@ -29,7 +29,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Fazli',
     description: 'A large variety known for its size and late-season availability. Fazli is widely used in pickles and jams, but is also a treat for those who love a big, juicy slice.',
     season: 'July - August',
-    image: '/src/assets/images/fazli_mango_1779088673752.png',
+    image: '/src/assets/images/fazli_mango_1779088666803.png',
     characteristics: ['Large Size', 'Juicy', 'Late Season', 'Excellent for Processing']
   },
   {
@@ -37,7 +37,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Amrapali',
     description: 'A hybrid variety that has gained massive popularity for its miniature size and extremely sweet, deep orange pulp.',
     season: 'June - July',
-    image: '/src/assets/images/amrapali_mango_portrait_1779088686144.png',
+    image: '/src/assets/images/amrapali_mango_portrait_1779088686121.png',
     characteristics: ['Deep Orange Pulp', 'Very Sweet', 'Compact Size', 'High Pulp Content']
   },
   {
