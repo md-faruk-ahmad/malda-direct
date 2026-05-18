@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "motion/react";
-import { MessageCircle, ArrowRight } from "lucide-react";
+import { MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -24,6 +24,23 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
           alt="Malda Mango Orchard"
           referrerPolicy="no-referrer"
         />
+        
+        {/* C2PA Provenance Indicator */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="absolute bottom-10 right-10 z-20 hidden lg:flex items-center gap-3 bg-white/10 backdrop-blur-xl px-5 py-3 rounded-2xl border border-white/20"
+        >
+          <div className="bg-[#e6b34b] p-2 rounded-lg">
+            <ShieldCheck className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <div className="text-[10px] font-bold text-[#e6b34b] uppercase tracking-widest">Provenance Verified</div>
+            <div className="text-xs text-white/90 font-medium">C2PA Secure Metadata</div>
+          </div>
+        </motion.div>
+
         <div className="absolute inset-0 bg-[#2c241c]/40 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-transparent md:hidden" />
       </motion.div>

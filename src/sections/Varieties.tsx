@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { MessageCircle, ChevronRight } from "lucide-react";
+import { MessageCircle, ChevronRight, ShieldCheck } from "lucide-react";
 import { MANGO_VARIETIES } from "../constants";
 
 interface VarietiesProps {
@@ -44,6 +44,14 @@ export const Varieties = ({ orderVariety }: VarietiesProps) => {
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
+                
+                {/* C2PA Authenticity Badge */}
+                <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-black/5 shadow-lg">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                    <span className="text-[9px] font-bold text-gray-800 uppercase tracking-wider">Certified Authentic</span>
+                  </div>
+                </div>
               </div>
               
               <div className="p-4 md:p-7 flex flex-col flex-1">
