@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
 import heroImg from "../../assets/images/hero_mango.png";
+import heroImgMobile from "../../assets/images/hero_mango_mobile.png";
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -19,12 +20,15 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
         style={{ scale: imageScale }}
         className="absolute inset-0 z-0"
       >
-        <img 
-          src={heroImg} 
-          className="w-full h-full object-cover"
-          alt="Malda Mango Orchard"
-          referrerPolicy="no-referrer"
-        />
+        <picture className="w-full h-full">
+          <source media="(max-width: 640px)" srcSet={heroImgMobile} />
+          <img 
+            src={heroImg} 
+            className="w-full h-full object-cover"
+            alt="Malda Mango Orchard"
+            referrerPolicy="no-referrer"
+          />
+        </picture>
         
         {/* C2PA Provenance Indicator */}
         <motion.div 
@@ -42,8 +46,8 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
           </div>
         </motion.div>
 
-        <div className="absolute inset-0 bg-[#2c241c]/40 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-transparent md:hidden" />
+        <div className="absolute inset-0 bg-[#2c241c]/60 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-[#2c241c]/30 md:hidden" />
       </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-20">
@@ -60,13 +64,13 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
               ESTABLISHED GROWERS
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1] mb-8 tracking-tighter" id="hero-title">
+          <h1 className="text-5xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] sm:leading-[1] mb-8 tracking-tighter" id="hero-title">
             Freshly <br className="hidden sm:block" />
             <span className="text-[#e6b34b] font-display italic font-light">Heritage</span>
             <br /> Mangoes
           </h1>
           
-          <p className="text-base sm:text-lg lg:text-xl text-gray-200/80 mb-10 leading-relaxed max-w-xl mx-0 font-light tracking-wide" id="hero-desc">
+          <p className="text-lg sm:text-lg lg:text-xl text-gray-200 mb-10 leading-relaxed max-w-xl mx-0 font-normal tracking-wide" id="hero-desc">
             Savor the authentic taste of Malda district. We provide premium wholesale supply of Himsagor and Langra varieties, harvested with generations of expertise.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 items-start justify-start">
