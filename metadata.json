@@ -1,0 +1,6 @@
+{
+  "name": "Malda Direct Mangoes",
+  "description": "Premium wholesale supplier of authentic Malda district mango varieties featuring Himsagar, Langra, and Fazli.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
