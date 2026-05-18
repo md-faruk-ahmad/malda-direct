@@ -29,7 +29,6 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
         </picture>
         
         <div className="absolute inset-0 bg-[#2c241c]/60 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-[#2c241c]/30 md:hidden" />
       </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-20">
