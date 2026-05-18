@@ -19,7 +19,7 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
         className="absolute inset-0 z-0"
       >
         <picture className="w-full h-full">
-          <source media="(max-width: 640px)" srcSet="/hero_mango_mobile.png" />
+          <source media="(max-width: 768px)" srcSet="/hero_mango_mobile.png" />
           <img 
             src="/hero_mango.png" 
             className="w-full h-full object-cover"
@@ -28,22 +28,6 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
           />
         </picture>
         
-        {/* C2PA Provenance Indicator */}
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 1, duration: 0.8 }}
-          className="absolute bottom-10 right-10 z-20 hidden lg:flex items-center gap-3 bg-white/10 backdrop-blur-xl px-5 py-3 rounded-2xl border border-white/20"
-        >
-          <div className="bg-[#e6b34b] p-2 rounded-lg">
-            <ShieldCheck className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <div className="text-[10px] font-bold text-[#e6b34b] uppercase tracking-widest">Provenance Verified</div>
-            <div className="text-xs text-white/90 font-medium">C2PA Secure Metadata</div>
-          </div>
-        </motion.div>
-
         <div className="absolute inset-0 bg-[#2c241c]/60 md:bg-gradient-to-r md:from-[#2c241c]/95 md:via-[#2c241c]/60 md:to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#2c241c] via-transparent to-[#2c241c]/30 md:hidden" />
       </motion.div>

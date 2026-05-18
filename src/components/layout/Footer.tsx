@@ -17,6 +17,7 @@ export const Footer = ({ scrollToSection }: FooterProps) => {
         </div>
         <div className="text-gray-500 text-xs text-center md:text-right">
           © 2026 Malda Direct Mangoes. All rights reserved.<br />
+          Developed by <span className="text-gray-300">Md Faruk Ahmad</span><br />
           Designed for excellence in agriculture.
         </div>
       </div>
