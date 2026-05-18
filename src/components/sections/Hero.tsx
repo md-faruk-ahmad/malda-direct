@@ -1,6 +1,5 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { MessageCircle, ArrowRight, ShieldCheck } from "lucide-react";
-import heroImg from "../../assets/images/hero_mango.png";
 
 interface HeroProps {
   scrollToSection: (id: string) => void;
@@ -20,7 +19,7 @@ export const Hero = ({ scrollToSection, openWhatsApp }: HeroProps) => {
         className="absolute inset-0 z-0"
       >
         <img 
-          src={heroImg} 
+          src="hero_mango.png" 
           className="w-full h-full object-cover"
           alt="Malda Mango Orchard"
           referrerPolicy="no-referrer"
