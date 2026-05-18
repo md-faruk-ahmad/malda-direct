@@ -1,3 +1,10 @@
+import himsagarImg from './assets/images/himsagar.png';
+import langraImg from './assets/images/langra.png';
+import fazliImg from './assets/images/fazli.png';
+import amrapaliImg from './assets/images/amrapali.png';
+import govindobhogImg from './assets/images/govindobhog.png';
+import lakhnaImg from './assets/images/lakhna.png';
+
 export interface MangoVariety {
   id: string;
   name: string;
@@ -13,7 +20,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Himsagor',
     description: 'The "King of Mangoes" in Bengal. Himsagar is famous for its fiberless pulp and sweet, aromatic flavor. It has a beautiful golden-yellow color when ripe.',
     season: 'May - June',
-    image: '/assets/images/himsagar.png',
+    image: himsagarImg,
     characteristics: ['Fiberless', 'Sweet Aroma', 'Golden Pulp', 'Premium Table Variety']
   },
   {
@@ -21,7 +28,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Langra',
     description: 'Known for its distinct greenish-yellow skin and incredible sweetness. Langra mangoes have a unique turpentine-like aroma that connoisseurs love.',
     season: 'June - July',
-    image: '/assets/images/langra.png',
+    image: langraImg,
     characteristics: ['Strong Aroma', 'Soft Texture', 'Greenish Skin', 'Rich Flavor']
   },
   {
@@ -29,7 +36,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Fazli',
     description: 'A large variety known for its size and late-season availability. Fazli is widely used in pickles and jams, but is also a treat for those who love a big, juicy slice.',
     season: 'July - August',
-    image: '/assets/images/fazli.png',
+    image: fazliImg,
     characteristics: ['Large Size', 'Juicy', 'Late Season', 'Excellent for Processing']
   },
   {
@@ -37,7 +44,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Amrapali',
     description: 'A hybrid variety that has gained massive popularity for its miniature size and extremely sweet, deep orange pulp.',
     season: 'June - July',
-    image: '/assets/images/amrapali.png',
+    image: amrapaliImg,
     characteristics: ['Deep Orange Pulp', 'Very Sweet', 'Compact Size', 'High Pulp Content']
   },
   {
@@ -45,7 +52,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Govindovog (Govindobhog)',
     description: 'A small, round, and highly sweet variety often compared to dessert sweets. It has a unique, delicate aroma that makes it a favorite for children and sweet lovers.',
     season: 'June',
-    image: '/assets/images/govindobhog.png',
+    image: govindobhogImg,
     characteristics: ['Small Size', 'Extremely Sweet', 'Desert Quality', 'Delicate Aroma']
   },
   {
@@ -53,7 +60,7 @@ export const MANGO_VARIETIES: MangoVariety[] = [
     name: 'Lakhna (Lakshman Bhog)',
     description: 'A premium variety with a beautiful reddish-yellow hue. It is known for its firm pulp and balanced sweetness, making it excellent for transport and storage.',
     season: 'June - July',
-    image: '/assets/images/lakhna.png',
+    image: lakhnaImg,
     characteristics: ['Reddish Skin', 'Firm Pulp', 'Balanced Sweetness', 'Great Shelf Life']
   }
 ];
